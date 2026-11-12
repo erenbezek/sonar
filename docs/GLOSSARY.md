@@ -12,3 +12,4 @@
 | fit score | "Bu şirketi ister miyim?" sorusunun puanı. Şirketin listeye girip girmeyeceğini belirler. |
 | timing score | "Bu şirket şimdi eleman alır mı?" sorusunun puanı. Açık ilan ve yeni haber gibi sinyallerden gelir, sıralamayı belirler. |
 | access check | Kaynak sitelere ve örnek şirket sitelerine birer istek atıp açılıp açılmadığını ölçen deneme. Hem yerelde hem GitHub Actions'ta çalışır. |
+| certs | Bazı sitelerin göndermediği ara sertifikaların durduğu klasör. Sistem sertifikalarına eklenerek kullanılır. İlk dosya: `sectigo-dv-r36.pem`. |
