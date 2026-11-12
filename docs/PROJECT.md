@@ -36,10 +36,10 @@ Access check sonucu (kriter sonuçtan önce yazılmıştı):
 - Yerelde açılan 9 örnek şirket sitesinin 9'u Actions'tan da açıldı.
 - OSTİM ve SASAD da Actions'tan açıldı.
 - Bakanlık TGB listesi Actions'tan açılmadı (bağlantı kurulamadı). Etkisi küçük: içeriği 14 teknokentin sabit listesi.
-- OSSA Actions'tan yarım indi. Aşama 3'te ayrıca çözülmesi gerekiyor.
+- OSSA kararsız: sunucusu bazen 3 saniyede tam yanıt veriyor, bazen indirmenin ortasında takılıyor. Bu hem yerelde hem Actions'ta oluyor, yani Actions'a özgü değil. Aşama 3'te tekrar deneme ve uzun bekleme süresi gerekecek.
 
 Access check'te çıkan bulgular:
-- Cyberpark ve Meteksan sertifika zincirini eksik gönderiyor. Çözüm kararı `DECISIONS.md`'de.
+- Cyberpark ve Meteksan sertifika zincirini eksik gönderiyor. Eksik ara sertifika `certs/` klasörüne eklendi. İki site de doğrulama açıkken hem yerelde hem Actions'ta açılıyor.
 - Bir site yerelde açılıp Actions'ta açılmayabiliyor, tersi de oluyor. Yerelde açılması tek başına kanıt değil.
 - Sunucu 200 dönse bile sayfa yarım ya da boş gelebiliyor. Bunu sadece sayfada beklenen metni aramak yakalıyor.
 
