@@ -1,0 +1,27 @@
+# Access check: kaynak sitelere GitHub Actions'tan erişilebiliyor mu?
+# Sadece elle çalıştırılır (Actions sekmesi > access-check > Run workflow).
+name: access-check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run access check
+        run: bash scripts/access_check.sh | tee result.tsv
+
+      - name: Write summary
+        run: |
+          {
+            echo '```'
+            cat result.tsv
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,19 @@
+# kind	name	url	marker (sayfada aranacak metin)
+# source: kaynak listeleri. company: Cyberpark listesinden rastgele seçilen 10 şirket sitesi (seed 20261112).
+source	ministry-tgb	https://teknopark.sanayi.gov.tr/Home/TgbListesi	Cyberpark
+source	cyberpark	https://www.cyberpark.com.tr/firma-arsiv	ALTOSEC
+source	odtu	https://odtuteknokent.com.tr/tr/firmalar/tum-firmalar.php	ANDAR
+source	hacettepe	https://www.hacettepeteknokent.com.tr/tr/firma_rehberi	yazilim-29
+source	ostim	https://www.ostimteknopark.com.tr/tr/firmalar-119	EKOL YAZILIM
+source	sasad	https://www.sasad.org.tr/uyelerimiz	Fotoniks
+source	ossa	https://www.ostimsavunma.org/firmalar	Mandes Teknoloji
+company	karel	http://www.karel.com.tr	<title>Karel
+company	endeksa	https://www.endeksa.com/tr/	ng-app=app
+company	kaminovasyon	http://www.kaminovasyon.com	NOVASYON A
+company	teslakom	http://www.teslakom.com	Unique Solutions
+company	meteksan	http://www.meteksan.com	Meteksan
+company	ctech	http://www.ctech.com.tr	CTech - Uydu
+company	melsis	http://www.melsis.com.tr	Ana Sayfa
+company	solveka	http://www.solveka.com.tr	Solveka Yaz
+company	gelisimpark	http://www.gelisimpark.com.tr	Precision. Strength
+company	sentebiolab	https://sentebiolab.com.tr	synthesize life
