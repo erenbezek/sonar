@@ -43,6 +43,6 @@ Access check'te çıkan bulgular:
 - Bir site yerelde açılıp Actions'ta açılmayabiliyor, tersi de oluyor. Yerelde açılması tek başına kanıt değil.
 - Sunucu 200 dönse bile sayfa yarım ya da boş gelebiliyor. Bunu sadece sayfada beklenen metni aramak yakalıyor.
 
-Henüz karara bağlanmamış konular: puan ağırlıkları, kütüphaneler, yapay zekâ sağlayıcılarının iş bölümü, web arama servisinin sağlayıcısı, botun çalışma sıklığı.
+Henüz karara bağlanmamış konular: puan yapısı, test setinin hazırlanışı, trafilatura kütüphanesi, botun çalışma sıklığı.
 
 Aşama 1 kapsamı: Cyberpark, ODTÜ ve Hacettepe adapter'ları, birleştirme, basit puan, Neon, bot ve haftalık özet.
