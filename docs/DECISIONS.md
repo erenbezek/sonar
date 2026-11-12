@@ -17,3 +17,5 @@
 | 2026-11-12 | Şirkete özel araştırma için bir web arama servisi eklenecek. Sağlayıcı henüz seçilmedi. | Şirketin kendi sitesi haber ve ilan bulmak için yetmiyor. |
 | 2026-11-12 | Dosya, kod ve terim isimleri İngilizce. Açıklamalar Türkçe. | Eren'in kararı. |
 | 2026-11-12 | Uygulama kodundan önce access check yapılır. | Kaynaklar yalnızca yerelden doğrulanmıştı. Actions'ın çıkış adresleri engelleniyorsa "VM yok" kararı etkilenir. |
+| 2026-11-12 | Access check geçti. "VM yok, her şey GitHub Actions'ta" kararı geçerli kalıyor. | Aşama 1'in üç kaynağı Actions'tan 3/3 açıldı, yerelde açılan 9 şirket sitesinin 9'u açıldı. Açılmayanlar: Bakanlık TGB listesi ve OSSA. |
+| 2026-11-12 | Sertifika zincirini eksik gönderen siteler için eksik ara sertifika kendi güven listemize eklenir. Sertifika doğrulaması kapatılmaz. | Doğrulama kapatılırsa araya giren biri sahte veri gösterebilir. Cyberpark ve Meteksan'ın ikisi de aynı ara sertifikayı kullanıyor: Sectigo Public Server Authentication CA DV R36 (2036'ya kadar geçerli). Yerelde curl ve Python ile denendi, doğrulama açıkken iki site de açıldı. |

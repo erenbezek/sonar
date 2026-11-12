@@ -29,12 +29,19 @@ Amaç, staj bittikten sonra junior backend olarak işe girme süresini kısaltma
 
 ## Şu an
 
-Henüz uygulama kodu yok. İlk iş olarak access check yapılıyor: kaynak sitelere GitHub Actions'tan erişilebiliyor mu?
+Henüz uygulama kodu yok. Access check yapıldı ve geçti (2026-11-12).
 
-Access check geçme kriteri (sonuçtan önce yazıldı):
-- Aşama 1'in üç kaynağı (Cyberpark, ODTÜ, Hacettepe) 3 çalışmanın 3'ünde de açılmalı.
-- Yerelde açılan örnek şirket sitelerinin en az %80'i Actions'tan da açılmalı.
-- "Açıldı" demek: HTTP 200 dönmesi ve sayfada beklenen metnin bulunması.
+Access check sonucu (kriter sonuçtan önce yazılmıştı):
+- Aşama 1'in üç kaynağı (Cyberpark, ODTÜ, Hacettepe) GitHub Actions'tan 3 çalışmanın 3'ünde de açıldı.
+- Yerelde açılan 9 örnek şirket sitesinin 9'u Actions'tan da açıldı.
+- OSTİM ve SASAD da Actions'tan açıldı.
+- Bakanlık TGB listesi Actions'tan açılmadı (bağlantı kurulamadı). Etkisi küçük: içeriği 14 teknokentin sabit listesi.
+- OSSA Actions'tan yarım indi. Aşama 3'te ayrıca çözülmesi gerekiyor.
+
+Access check'te çıkan bulgular:
+- Cyberpark ve Meteksan sertifika zincirini eksik gönderiyor. Çözüm kararı `DECISIONS.md`'de.
+- Bir site yerelde açılıp Actions'ta açılmayabiliyor, tersi de oluyor. Yerelde açılması tek başına kanıt değil.
+- Sunucu 200 dönse bile sayfa yarım ya da boş gelebiliyor. Bunu sadece sayfada beklenen metni aramak yakalıyor.
 
 Henüz karara bağlanmamış konular: puan ağırlıkları, kütüphaneler, yapay zekâ sağlayıcılarının iş bölümü, web arama servisinin sağlayıcısı, botun çalışma sıklığı.
 
