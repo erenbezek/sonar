@@ -96,3 +96,18 @@ Site adresi yazan 20 şirketin 5'i ilk okumada okunamadı.
 ## Kabaca hesap
 
 368 şirket → 154'ünün sitesi yazıyor → yaklaşık 115-130'u okunabiliyor → okunabilenlerin yaklaşık yarısı kendi yazılımını geliştiriyor. 20 şirketlik örneklemden geldiği için yanılma payı geniş. Site adresi yazmayan 214 şirket hakkında henüz veri yok.
+
+## 7. Tavily ile site adresi bulma, deneme 1 (2026-11-13)
+
+Adresi listede yazan şirketlerden rastgele 10 tane (seed 20261114). Her şirket iki sorguyla arandı: listedeki tam ad ve tam ad + "Bilkent Cyberpark". Sorgu başına 5 sonuç.
+
+| Kriter | Sonuç |
+|---|---|
+| Doğru site ilk 3 sonuçta, 10 şirketin en az 7'sinde (iki sorgudan biriyle) | Tutmadı: 5/10 |
+| Teknokentli sorgu sade sorgudan en az 2 şirket fazla bulmalı | Tutmadı: sade 3/10, teknokentli 4/10 |
+
+- Sonuçları rehber siteleri dolduruyor: LinkedIn, RocketReach, PitchBook, Yahoo Finance, Instagram.
+- Teknokent adı eklemek 3 şirkette sırayı iyileştirdi, 1 şirkette doğru siteyi sonuçlardan düşürdü. 10 şirketle kesin bir şey söylenemez.
+- Örneklemde kusur: bir şirketin (İnoved) listedeki adresi okunamadı, o şirket hiçbir sorguyla "bulundu" sayılamazdı.
+- Listedeki adres her zaman şirketin kendi alan adı değil: BGTS için listede `bilgeadam.com` yazıyor, aramada `bgts.com` çıktı. Yazılım Parkı için listede `yazilimparki.com.tr`, aramada `yazilimparki.com` çıktı. Bunlar kriterde "bulunamadı" sayıldı.
+- Sorguda şirketin tam ticari unvanı kullanıldı ("... ANONİM ŞİRKETİ"). Kısa adla denenmedi.
