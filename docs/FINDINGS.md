@@ -245,3 +245,18 @@ Bölüm B. Daha önce doğrulanamayan 3 sitede, düz okumada teknokent ya da şe
 | Harp Savunma | Doğrulandı (Playwright, ana sayfada "Ankara") |
 | Nedmod | Doğrulandı (Playwright, ana sayfada "Bilkent") |
 | Orbitel | Doğrulanmadı (Playwright ile 88 kelime, şehir adı yok) |
+
+## 14. Site bulma, deneme 6: kısa ilk kelime, yeni kural (2026-11-13)
+
+Kural: kısa ilk kelime tek başına aranır, alan adının başında olmalı, site doğrulamadan geçmeli. Örneklem: kısa ilk kelimeli ve adresi yazan 19 şirketten deneme 5'te kullanılmayan 9'u. Betik: `trials/trial_short_first_word.py`.
+
+| Kriter | Sonuç |
+|---|---|
+| Kabul edilen yanlış site: 0 | Tuttu: 0 |
+| Kabul edilen doğru site: en az 5/9 | Tutmadı: 3/9 |
+
+- Bulunamayan 4 şirketin hiçbirinde doğru site arama sonuçlarında yoktu (C Tech, C.B.K. Soft, CE Tasarım, E-A Teknoloji). Darboğaz seçim kuralı değil, aramanın kendisi: kısa ve genel adlarla yapılan sorgu ilgisiz sonuç getiriyor.
+- Doğru site sonuçlarda olan 4 şirketin 4'ünü kural seçti, 3'ü doğrulandı.
+- Doğrulanamayan doğru site (Map): `mapyazilim.com` sadece `www` ile açılıyor, doğrulama adımı `www`'suz adresi deniyordu. Betikteki hata düzeltildi, düzeltmeden sonra site doğrulandı. Kriter sonucu 3/9 olarak kalır; düzeltmeyle 4/9.
+- Yabancı bir şirketin sitesi seçildi ama doğrulama eledi (Zeo için `zeotechnologies.com`).
+- İki denemenin toplamı: ilk kelimesi kısa olan 19 şirketin 6-7'sinde doğru site kabul edildi, yanlış site kabul edilmedi. Listede bu türden 47 şirket var (%13).

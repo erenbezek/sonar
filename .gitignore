@@ -1,2 +1,7 @@
 # Anahtarlar. Asla repoya girmez.
 .env
+
+# Deneme çıktıları ve yerel Python ortamı.
+trials/out/
+.venv/
+__pycache__/

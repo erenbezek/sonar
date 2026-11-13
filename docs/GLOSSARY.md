@@ -17,3 +17,4 @@
 | low data | Hakkında yeterli bilgi bulunamayan şirketin işareti. Düşük puan anlamına gelmez. |
 | access check | Kaynak sitelere ve örnek şirket sitelerine birer istek atıp açılıp açılmadığını ölçen deneme. Hem yerelde hem GitHub Actions'ta çalışır. |
 | certs | Bazı sitelerin göndermediği ara sertifikaların durduğu klasör. Sistem sertifikalarına eklenerek kullanılır. İlk dosya: `sectigo-dv-r36.pem`. |
+| trials | Karar vermeden önce gerçek şirketlerde yapılan denemelerin betiklerinin durduğu klasör. Sonuçları `docs/FINDINGS.md`'ye yazılır. |
