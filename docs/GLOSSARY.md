@@ -18,3 +18,5 @@
 | access check | Kaynak sitelere ve örnek şirket sitelerine birer istek atıp açılıp açılmadığını ölçen deneme. Hem yerelde hem GitHub Actions'ta çalışır. |
 | certs | Bazı sitelerin göndermediği ara sertifikaların durduğu klasör. Sistem sertifikalarına eklenerek kullanılır. İlk dosya: `sectigo-dv-r36.pem`. |
 | trials | Karar vermeden önce gerçek şirketlerde yapılan denemelerin betiklerinin durduğu klasör. Sonuçları `docs/FINDINGS.md`'ye yazılır. |
+| site finder | Şirketin site adresini bulan adım. Adla arar, alan adına göre seçer, sayfadaki teknokent ya da adres bilgisiyle doğrular. |
+| site scan | Şirketin sitesinden sayfaları okuyan adım. Okunan metin Groq'a verilir. |

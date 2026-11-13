@@ -29,28 +29,21 @@ Amaç, staj bittikten sonra junior backend olarak işe girme süresini kısaltma
 
 ## Şu an
 
-Henüz uygulama kodu yok. Access check yapıldı ve geçti (2026-11-12).
+Uygulama kodu henüz yok. Kararlar gerçek şirketlerde denenerek veriliyor: bulgular `FINDINGS.md`'de, deneme betikleri `trials/` klasöründe.
 
-Access check sonucu (kriter sonuçtan önce yazılmıştı):
-- Aşama 1'in üç kaynağı (Cyberpark, ODTÜ, Hacettepe) GitHub Actions'tan 3 çalışmanın 3'ünde de açıldı.
-- Yerelde açılan 9 örnek şirket sitesinin 9'u Actions'tan da açıldı.
-- OSTİM ve SASAD da Actions'tan açıldı.
-- Bakanlık TGB listesi Actions'tan açılmadı (bağlantı kurulamadı). Etkisi küçük: içeriği 14 teknokentin sabit listesi.
-- OSSA kararsız: sunucusu bazen 3 saniyede tam yanıt veriyor, bazen indirmenin ortasında takılıyor. Bu hem yerelde hem Actions'ta oluyor, yani Actions'a özgü değil. Aşama 3'te tekrar deneme ve uzun bekleme süresi gerekecek.
+Karara bağlananlar (ayrıntı `DECISIONS.md`'de):
+- Access check geçti (2026-11-12). Eksik ara sertifika `certs/` klasöründe.
+- Puan hiçbir şirketi elemez. İki kuyruk var: apply queue ve outreach queue. Her 5 card'dan 1'i explore card. Bilgi bulunamayan şirket low data olur.
+- Site adresi site finder ile bulunur (Tavily araması, alan adına göre seçim, sayfadaki adresle doğrulama).
+- Site scan, Groq ve Playwright Aşama 1'de.
+- Groq siteden kanıt cümlesiyle olgu çıkarır, kanıt kodla kontrol edilir.
 
-Access check'te çıkan bulgular:
-- Cyberpark ve Meteksan sertifika zincirini eksik gönderiyor. Eksik ara sertifika `certs/` klasörüne eklendi. İki site de doğrulama açıkken hem yerelde hem Actions'ta açılıyor.
-- Bir site yerelde açılıp Actions'ta açılmayabiliyor, tersi de oluyor. Yerelde açılması tek başına kanıt değil.
-- Sunucu 200 dönse bile sayfa yarım ya da boş gelebiliyor. Bunu sadece sayfada beklenen metni aramak yakalıyor.
+Henüz karara bağlanmamış konular:
+- Fit score'un parçaları. Önerilen tablo (backend 0/2, growth signal 0/1/2, remote 0/1) kelime eşleştirmeye dayanıyordu ve sitelerde çalışmadı. Groq'un çıkarabildiği olgulara göre yeniden ele alınacak.
+- Groq'un "satıyor mu, geliştiriyor mu" ayrımı. Zor örnekte hâlâ yanılıyor.
+- Site scan'in hangi sayfaları okuyacağı ve Playwright'a ne zaman başvuracağı.
+- Listede adresi yazan şirketlerde adres eskimişse ne yapılacağı.
+- Site finder'ın bulamadığı durumlar: alan adında şirket adı geçmeyenler, sitesinde adres yazmayanlar, ilk kelimesi kısa olanlar.
+- Test setinin hazırlanışı, trafilatura kütüphanesi, botun çalışma sıklığı.
 
-Puan yapısı karara bağlandı (2026-11-12):
-- Puan hiçbir şirketi elemez. Tek eleme, şirketin yazılım işi yapmadığına dair kanıt.
-- İki kuyruk var: apply queue (açık ilanı olanlar) ve outreach queue (ilanı olmayan ama uygun görünenler). Card'lar ikisinden yarı yarıya gelir, kuyruk içindeki sırayı fit score belirler.
-- Her 5 card'dan 1'i explore card.
-- Bilgi bulunamayan şirket düşük puan almaz, low data olarak işaretlenir.
-- Remote ya da hibrit çalışma artı puan getirir, ofiste çalışma eksi getirmez.
-- ASELSAN, HAVELSAN ve Roketsan card olarak gönderilmez.
-
-Henüz karara bağlanmamış konular: fit score'un parçaları ve ağırlıkları, test setinin hazırlanışı (seçim, etiketleme yeri, kaçırma kriterinin rakamı), trafilatura kütüphanesi, botun çalışma sıklığı.
-
-Aşama 1 kapsamı: Cyberpark, ODTÜ ve Hacettepe adapter'ları, birleştirme, basit puan, Neon, bot ve haftalık özet.
+Aşama 1 kapsamı: Cyberpark, ODTÜ ve Hacettepe adapter'ları, site finder, site scan, Groq ile olgu çıkarma, birleştirme, basit puan, Neon, bot ve haftalık özet.
