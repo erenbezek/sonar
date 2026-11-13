@@ -111,3 +111,19 @@ Adresi listede yazan şirketlerden rastgele 10 tane (seed 20261114). Her şirket
 - Örneklemde kusur: bir şirketin (İnoved) listedeki adresi okunamadı, o şirket hiçbir sorguyla "bulundu" sayılamazdı.
 - Listedeki adres her zaman şirketin kendi alan adı değil: BGTS için listede `bilgeadam.com` yazıyor, aramada `bgts.com` çıktı. Yazılım Parkı için listede `yazilimparki.com.tr`, aramada `yazilimparki.com` çıktı. Bunlar kriterde "bulunamadı" sayıldı.
 - Sorguda şirketin tam ticari unvanı kullanıldı ("... ANONİM ŞİRKETİ"). Kısa adla denenmedi.
+
+## 8. Tavily ile site adresi bulma, deneme 2 (2026-11-13)
+
+Yeni 10 şirket (seed 20261115). Değişiklikler: unvandaki hukuki ekler atıldı ("A.Ş.", "LİMİTED ŞİRKETİ", "SANAYİ VE TİCARET"), 14 rehber sitesi aramadan dışlandı (LinkedIn, RocketReach, PitchBook vb.). Sade ve "Bilkent Cyberpark" ekli sorgu karşılaştırıldı.
+
+| Kriter | Sonuç |
+|---|---|
+| Doğru site ilk 3 sonuçta, en az 7/10 | Tutmadı: 3/10 |
+| Teknokentli sorgu sade sorgudan en az 2 şirket fazla bulmalı | Tutmadı: sade 3/10, teknokentli 2/10 |
+
+- Doğru site çoğunlukla sonuçlarda var ama üst sırada değil. İlk 5 sonuca bakılırsa: sade sorgu 9/10, teknokentli sorgu 5/10.
+- Teknokent adı eklemek bu denemede zarar verdi: sonuçlara `cyberpark.com.tr` ve başka teknopark rehberleri doldu, 4 şirkette doğru site ilk 5'ten düştü.
+- İki denemenin toplamında teknokent adı eklemenin faydası görülmedi.
+- İlk 5 sonuç içinde doğru site, çoğunlukla alan adında şirket adının ayırt edici kelimesi geçen sonuçtu (emvop.com, kimola.com, smayd.com). Bu, sonuçlara bakarak çıkarılmış bir varsayım, ayrıca sınanmadı.
+- Kusur: unvan kısaltma "LTD.ŞTİ." (boşluksuz) yazımını yakalamadı, AGEM tam unvanla arandı.
+- Sonuçlarda açıklanamayan `tavily.com` adresleri çıktı, incelenmedi.
