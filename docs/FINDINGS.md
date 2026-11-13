@@ -200,3 +200,25 @@ Listede sektöründe danışmanlık, telekomünikasyon ya da entegrasyon geçen 
 - Okunamayan 3 site: Comnify (içerik JavaScript ile yükleniyor), Kron (bağlantı zaman aşımı), KMO (bot doğrulama sayfası).
 - Önceki "şirketler teknolojiyi sitede yazmıyor" bulgusuna iki karşı örnek: Akdoğan'ın hizmet menüsünde "Backend Development, CI/CD, Amazon Web Services, Microservices Architecture" var. Dusoft'un ana sayfasında "WE ARE HIRING Developer C#, PYTHON, JAVA ... FRONTEND - BACKEND" yazıyor. İkisi de 31 site içinde.
 - Bu "zor" örneklem beklenenden kolaydı: okunabilen 7 şirketin 5'i açıkça yazılım şirketi. Sektör alanındaki "danışmanlık" kelimesi çoğunlukla yazılım şirketlerinin unvanından geliyor.
+
+## 12. Okunamayan sitelerde Playwright ve Tavily extract (2026-11-13)
+
+Adresi yazan 30 şirketin 8'i ilk düz okumada okunamamıştı. İkisi basit kurallarla kurtulmuştu (bölüm 6). JavaScript ile yüklenen 3 site (Endeksa, Nanodev, Comnify) ve zaman aşımına uğrayan Kron'da üç yöntem denendi. Playwright 1.65.1, headless Chromium, varsayılan tarayıcı kimliği.
+
+| Kriter | Sonuç |
+|---|---|
+| JavaScript ile yüklenen 3 sitede Playwright şirketin işini anlatan metni getirmeli (en az 100 kelime): en az 2/3 | Tuttu: 2/3 |
+| Aynı 3 sitede Tavily extract aynı metni getirmeli: en az 2/3 | Tutmadı: 0/3 |
+
+| Site | Düz okuma | Playwright | Tavily extract |
+|---|---|---|---|
+| Nanodev | 5 kelime | 228 kelime, 17 sn | Başarısız |
+| Comnify | 1 kelime | 111 kelime, 2 sn | Başarısız |
+| Endeksa | 0 kelime | Cloudflare bot doğrulama sayfası | Başarısız |
+| Kron | Zaman aşımı | Zaman aşımı | Zaman aşımı |
+
+- Tavily extract varsayılan ayarla denendi; "advanced" seçeneği denenmedi.
+- KMO bot doğrulama sayfası gösterdiği için denenmedi. Bot doğrulamasını aşmaya çalışılmıyor.
+- 8 okunamayan sitenin son durumu: 4'ü kurtuldu (Simovate: ana alan adı, Argem: yönlendirme, Nanodev ve Comnify: Playwright). 4'ü kaldı (Endeksa ve KMO: bot koruması, Kron: zaman aşımı, Ekin: alan adı kapanmış).
+- Adresi yazan 30 şirkette okunamayan oran %27'den %13'e iniyor.
+- Düz okumada kelime sayıları: JavaScript ile yüklenen sitelerde 0, 1, 5. İçeriği gerçekten az olan sitelerde 15-59. Playwright'a ne zaman başvurulacağını belirleyen eşik sınanmadı.
