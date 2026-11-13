@@ -154,3 +154,31 @@ Bölüm 2, adresi olmayan 10 şirket (seed 20261117). Doğru cevap bilinmediği 
 
 - Kuralın zayıf yeri kısa ilk kelimeler: "AI", "E", "HD". "AI" yanlış siteyi seçtirdi, "E" tesadüfen doğruyu seçti.
 - Sınanmamış gözlem: doğru sitelerin sayfasında "Cyberpark", "Bilkent" ya da "Ankara" geçiyor (Oplog, Codebase'in doğru sitesi). Yanlış seçilen `codebase.com`'da geçmiyor. Teknokent adı sorguda işe yaramadı, ama bulunan siteyi doğrulamakta işe yarayabilir.
+
+## 10. Tavily ile site adresi bulma, deneme 4 (2026-11-13)
+
+Deneme 3'e iki kural eklendi: (1) ilk kelime 4 harften kısaysa ilk iki kelime birleştirilip aranır, (2) seçilen sitenin ana sayfasında, yoksa iletişim sayfasında "Cyberpark", "Bilkent" ya da "Ankara" geçmeli; geçmiyorsa site kabul edilmez. `cyberpark.com.tr` aramadan dışlandı.
+
+Bölüm 1, adresi bilinen 10 yeni şirket (seed 20261118):
+
+| Kriter | Sonuç |
+|---|---|
+| Kabul edilen yanlış site: 0 | Tuttu: 0 |
+| Kabul edilen doğru site: en az 6/10 | Tuttu: 7/10 |
+
+- Doğrulama 1 doğru siteyi eledi (Harp Savunma: iletişim sayfası bulunamadı) ve listedekinden farklı 1 siteyi eledi (Creasaur için `creasaur.com`; listede `creasaur.net`, aynı şirket olup olmadığı belirsiz).
+- 1 şirket bulunamadı: listedeki adresinde şirket adı geçmiyor (ARMS → `elektroniksavunma.com`).
+- Kabul edilen 7 sitenin 5'i sadece "Ankara" kelimesiyle doğrulandı.
+- Kural (1) sınanmadı: örneklemde ilk kelimesi 4 harften kısa şirket çıkmadı.
+
+Bölüm 2, adresi olmayan 10 yeni şirket (seed 20261119), elle kontrol:
+
+| Sonuç | Sayı | Şirketler |
+|---|---|---|
+| Kabul edildi, doğru görünüyor | 3 | ZironSoft, Tropiq, VisionX |
+| Seçildi ama doğrulanmadı | 2 | Nedmod (sayfa neredeyse boş), Orbitel (iletişim sayfasında şehir yok) |
+| Bulunamadı | 5 | İkisi şahıs adı (şirket değil, kişi adına kayıt) |
+
+- Doğrulama kuralıyla yanlış site kabul edilmedi, ama adresi olmayan şirketlerde verim düştü: deneme 3'te 10'da yaklaşık 6, bu denemede 10'da 3.
+- Doğrulanmayan iki site büyük ihtimalle doğru şirketti. Bunlar atılmamalı, "doğrulanmamış aday" olarak tutulmalı.
+- Kabaca hesap: adresi olmayan 214 şirketin %30-50'si bu yöntemle kazanılabilir. Dört denemede toplam 80 Tavily kredisi harcandı.
