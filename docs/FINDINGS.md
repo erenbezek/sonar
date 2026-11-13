@@ -182,3 +182,21 @@ Bölüm 2, adresi olmayan 10 yeni şirket (seed 20261119), elle kontrol:
 - Doğrulama kuralıyla yanlış site kabul edilmedi, ama adresi olmayan şirketlerde verim düştü: deneme 3'te 10'da yaklaşık 6, bu denemede 10'da 3.
 - Doğrulanmayan iki site büyük ihtimalle doğru şirketti. Bunlar atılmamalı, "doğrulanmamış aday" olarak tutulmalı.
 - Kabaca hesap: adresi olmayan 214 şirketin %30-50'si bu yöntemle kazanılabilir. Dört denemede toplam 80 Tavily kredisi harcandı.
+
+## 11. Groq ile olgu çıkarma, deneme 3: zor şirketler (2026-11-13)
+
+Listede sektöründe danışmanlık, telekomünikasyon ya da entegrasyon geçen ve adresi yazan şirketler: tam 10 tane çıktı, hepsi alındı. Soru metni deneme 2 ile aynı.
+
+| Kriter | Sonuç |
+|---|---|
+| Kanıt cümlesi sayfada geçmeli: hepsi | Tutmadı: 14/15 |
+| "Kendi yazılımını geliştiriyor mu" elle etiketle aynı, en az 8/10 | Tuttu: 9/10 |
+| Sadece satan şirkete "geliştiriyor" demesi: en fazla 1 | Tuttu, ama sınanmadı: örneklemde sadece satan şirket çıkmadı |
+| Okunamayan şirkete "bilinmiyor" demeli | Tuttu: 3/3 |
+
+- Bulunamayan kanıt (Akdoğan): model cümlenin öznesini değiştirdi. Sayfada "They are operational building blocks", modelde "Our products are operational building blocks". Kanıt kontrolü bu tür değişikliği yakalıyor.
+- Tek fark (Polaran): 59 kelimelik sayfada "kutupsal kodlama ile ilgili ürün ve fikri mülkiyet geliştirme" yazıyor, yazılım kelimesi geçmiyor. Model "yes (software library)" dedi: metnin ötesine geçen bir çıkarım.
+- Ek kontrol, kriter dışı: deneme 1'de yanıltan Teslakom yeni soruyla tekrar soruldu. Model yine "yes" dedi, kanıt olarak şirketin sunduğu ürünleri anlatan bir cümle gösterdi. Soruya eklenen "satmak geliştirmek sayılmaz" cümlesi, tasarlandığı örnekte bile işe yaramadı. Teslakom'un sitesinde ayrıca "Yazılım Geliştirme" başlığı da var; şirketin gerçekte yazılım geliştirip geliştirmediği siteden kesin anlaşılmıyor.
+- Okunamayan 3 site: Comnify (içerik JavaScript ile yükleniyor), Kron (bağlantı zaman aşımı), KMO (bot doğrulama sayfası).
+- Önceki "şirketler teknolojiyi sitede yazmıyor" bulgusuna iki karşı örnek: Akdoğan'ın hizmet menüsünde "Backend Development, CI/CD, Amazon Web Services, Microservices Architecture" var. Dusoft'un ana sayfasında "WE ARE HIRING Developer C#, PYTHON, JAVA ... FRONTEND - BACKEND" yazıyor. İkisi de 31 site içinde.
+- Bu "zor" örneklem beklenenden kolaydı: okunabilen 7 şirketin 5'i açıkça yazılım şirketi. Sektör alanındaki "danışmanlık" kelimesi çoğunlukla yazılım şirketlerinin unvanından geliyor.
