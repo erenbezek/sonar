@@ -84,11 +84,11 @@ def has_short_first_word(name: str) -> bool:
     return bool(w) and len(w) < SHORT_WORD
 
 
-def search(query: str, api_key: str) -> list[dict]:
+def search(query: str, api_key: str, max_results: int = 5) -> list[dict]:
     r = requests.post(
         "https://api.tavily.com/search",
         headers={"Authorization": f"Bearer {api_key}"},
-        json={"query": query, "max_results": 5, "search_depth": "basic", "exclude_domains": EXCLUDE_DOMAINS},
+        json={"query": query, "max_results": max_results, "search_depth": "basic", "exclude_domains": EXCLUDE_DOMAINS},
         timeout=60,
     )
     return r.json().get("results", []) if r.status_code == 200 else []

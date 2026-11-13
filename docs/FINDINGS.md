@@ -260,3 +260,27 @@ Kural: kısa ilk kelime tek başına aranır, alan adının başında olmalı, s
 - Doğrulanamayan doğru site (Map): `mapyazilim.com` sadece `www` ile açılıyor, doğrulama adımı `www`'suz adresi deniyordu. Betikteki hata düzeltildi, düzeltmeden sonra site doğrulandı. Kriter sonucu 3/9 olarak kalır; düzeltmeyle 4/9.
 - Yabancı bir şirketin sitesi seçildi ama doğrulama eledi (Zeo için `zeotechnologies.com`).
 - İki denemenin toplamı: ilk kelimesi kısa olan 19 şirketin 6-7'sinde doğru site kabul edildi, yanlış site kabul edilmedi. Listede bu türden 47 şirket var (%13).
+
+## 15. Site bulma, deneme 7: aramanın kaçırdığı şirketler (2026-11-13)
+
+Örneklem: önceki denemelerde doğru sitesi ilk 5 sonuca girmeyen, adresi bilinen 10 şirket (daha önce görülmüş şirketler, sonuç iyimser olabilir). Her şirket iki sorguyla, 10'ar sonuçla arandı: sadece ad ve ad + "Ankara". Betik: `trials/trial_search_recall.py`.
+
+| Kriter | Sonuç |
+|---|---|
+| Bir yöntem, ad/ilk 5'e göre en az 4 şirket fazla bulmalı | Tutmadı: en iyi yöntem 3 fazla buldu |
+| Kabul edilen yanlış site: 0 | Kesin yanlış yok; 1 site yanlış sebeple doğrulandı |
+
+Doğru sitesi kabul edilen şirket sayısı (listedekinden farklı ama aynı şirkete ait adresler elle kontrol edilip doğru sayıldı):
+
+| Yöntem | Doğru site kabul edildi |
+|---|---|
+| Ad, ilk 5 sonuç | 3/10 |
+| Ad, ilk 10 sonuç | 4/10 |
+| Ad + "Ankara", ilk 5 sonuç | 3/10 |
+| Ad + "Ankara", ilk 10 sonuç | 6/10 |
+
+- Bu 10 şirket daha önce "bulunamadı" çıkmıştı; bu çalışmada temel yöntem 3'ünü buldu. Sebep: arama sonuçları çalışmadan çalışmaya değişiyor ve iki şirkette bulunan adres listedekinden farklıydı.
+- Listedeki adres güvenilir bir "doğru cevap" değil. Üç şirkette daha eskimiş çıktı: BK Mobil (`bkmobil.com.tr`, `bktomorrow.com`'a yönleniyor), İLG (`ilg.com.tr` açılmıyor, şirket `ilgtechnologies.com`'da ve sayfasında "Development Office Bilkent Cyberpark" yazıyor), A2 (`a2labs.com.tr` sertifika hatası veriyor). Önceki denemelerdeki "bulunamadı" sayıları bu yüzden olduğundan kötü görünüyor olabilir.
+- Doğrulama kuralında delik: A2 için seçilen `a2technology.co` sitesi "Ankara" kelimesiyle doğrulandı, ama kelime müşteri listesinde geçiyordu ("Ankara Emniyet Müdürlüğü"). Şirket adı uyuyor ("a2 Teknoloji"), büyük ihtimalle doğru şirket; ama doğrulama yanlış sebeple geçti.
+- E-A Teknoloji: doğru site ilk sıradaydı, sayfada şehir adı geçmediği için doğrulanamadı.
+- İki şirket hiçbir yöntemle bulunamadı: C.B.K. Soft, CE Tasarım (sitesi `positive.com.tr`, alan adında şirket adı yok).
