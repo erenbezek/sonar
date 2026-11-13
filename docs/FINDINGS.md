@@ -337,3 +337,26 @@ Sitesi daha önce okunmamış, adresi yazan rastgele 15 şirket (seed 20261124).
   - T2: hizmet sayfasının adı "Consulting", kelime listesinde yoktu.
 - Görülen diğer kusurlar: aynı sayfa `www`'li ve `www`'suz iki kez seçildi (innoCentrum); "Kariyer" bağlantısı hakkımızda sayfasının bir bölümüne gidiyordu ve hakkımızda sayfası kariyer diye seçildi (T2); innoCentrum'da asıl ürün "Platform" ve "Modüller" altında, "Hizmetler" seçildi.
 - Her sayfanın metni menüyle başlıyor ve menü her sayfada tekrar ediyor. Oska'da seçilen üç sayfanın ilk 75 kelimesi aynı. Groq'a gönderilen metnin önemli bir kısmı tekrar.
+
+## 18. Groq'a gidecek metni temizleme, deneme 10 (2026-11-13)
+
+Deneme 9'daki 15 sitenin seçilen sayfalarında üç yöntem: ham metin, trafilatura 2.3.1 (varsayılan ve `favor_recall`), tekrar eden satırı atma (bir satır sitenin sayfalarında ilk geçtiği yerde kalır, tekrarları silinir). Ölçü: ham metindeki en az 12 kelimelik satırlar "içerik cümlesi" sayıldı. Betik: `trials/trial_text_cleaning.py`. Açılmayan A2 hesaba katılmadı (14 site).
+
+| Kriter | Tekrar eden satırı atma | Trafilatura | Trafilatura, favor_recall |
+|---|---|---|---|
+| Metin ortancada en az %30 kısalmalı | Tutmadı: %28 | Tuttu: %52 | Tuttu: %52 |
+| İçerik cümlelerinin ortancada en az %90'ı korunmalı | %100 (aşağıdaki nota bakın) | Tutmadı: %76 | Tutmadı: %67 |
+| En kötü sitede en az %50 korunmalı | %100 | Tutmadı: %0 | Tutmadı: %0 |
+
+Hiçbir yöntem üç kriteri birden geçmedi. Ama ölçünün kendisi kusurlu çıktı:
+- Tekrar eden satırı atma yöntemi tanımı gereği hiçbir farklı satırı silmez; %100 korunma bir ölçüm değil, yöntemin tanımı.
+- "En az 12 kelimelik satır" çerez bildirimlerini, kullanıcı yorumlarını ve adres satırlarını da içerik sayıyor. Trafilatura'nın "kaybettiği" cümlelerin bir kısmı tam da atılması istenen şeyler: Oska'da çerez metinleri, Mora'da oyun yorumları.
+- Trafilatura gerçek içerik de attı: Zeg'in hakkımızda sayfasındaki ekip ve süreç paragrafları, adres satırları.
+- Mora'da ölçü %0 gösterdi, ama trafilatura çıktısı elle bakınca iyiydi: oyunların adları ve açıklamaları duruyor.
+
+Ölçülebilen kesin şeyler:
+- Tekrar eden satırı atmak risksiz ve metni yaklaşık dörtte bir kısaltıyor (en çok Oska %64, BNCool %59).
+- Trafilatura metni yaklaşık yarıya indiriyor.
+- Groq'un dakikalık sınırı yaklaşık 2.500 kelimeye izin veriyor. Ham metin 14 sitenin 5'inde bunu aşıyor, tekrar atılınca 2'sinde, trafilatura ile hiçbirinde.
+
+Doğru ölçü cümle saymak değil, Groq'un cevabının değişip değişmediği. Sonraki deneme bunu ölçecek.

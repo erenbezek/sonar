@@ -162,3 +162,60 @@ def render(browser, url: str) -> tuple[str, str]:
         return url, ""
     finally:
         page.close()
+
+
+_BLOCK_TAGS = {"p", "div", "li", "ul", "ol", "h1", "h2", "h3", "h4", "h5", "h6", "br", "tr", "td", "th", "section", "article",
+               "header", "footer", "nav", "main", "aside", "form", "table", "blockquote", "figcaption", "option", "button"}
+
+
+class _Blocks(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.skip = 0
+        self.parts: list[str] = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag in _Page.SKIP:
+            self.skip += 1
+        if tag in _BLOCK_TAGS:
+            self.parts.append("\n")
+
+    def handle_endtag(self, tag):
+        if tag in _Page.SKIP and self.skip:
+            self.skip -= 1
+        if tag in _BLOCK_TAGS:
+            self.parts.append("\n")
+
+    def handle_data(self, data):
+        if not self.skip:
+            self.parts.append(data)
+
+
+def lines(html: str) -> list[str]:
+    """HTML'den görünen metni satır satır çıkarır (blok etiketleri satır böler)."""
+    parser = _Blocks()
+    try:
+        parser.feed(html)
+    except Exception:  # noqa: BLE001
+        pass
+    out = []
+    for line in "".join(parser.parts).split("\n"):
+        line = " ".join(line.split())
+        if line:
+            out.append(line)
+    return out
+
+
+def drop_repeats(pages: list[list[str]]) -> list[list[str]]:
+    """Bir satır sitenin sayfalarında ilk geçtiği yerde kalır, sonraki tekrarları atılır (menü, altbilgi)."""
+    seen: set[str] = set()
+    out = []
+    for page_lines in pages:
+        kept = []
+        for line in page_lines:
+            key = line.casefold()
+            if key not in seen:
+                seen.add(key)
+                kept.append(line)
+        out.append(kept)
+    return out
