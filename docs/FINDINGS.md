@@ -318,3 +318,22 @@ Adresi olmayan 10 şirket (seed 20261123):
 - Önceki denemelerde adresi olmayan şirketlerde 10'da 3 kabul ediliyordu. Fark kısmen yöntemden (Playwright'lı doğrulama, ikinci sorgu), kısmen örneklemden geliyor olabilir; ayrıştırılmadı.
 
 Site bulma denemelerinin toplamı (bölüm 7-16): yaklaşık 150 Tavily kredisi. Doğrulama adımı eklendikten sonraki dört denemede kesin yanlış olduğu görülen hiçbir site kabul edilmedi.
+
+## 17. Site scan, deneme 9: sayfaları seçme ve okuma (2026-11-13)
+
+Sitesi daha önce okunmamış, adresi yazan rastgele 15 şirket (seed 20261124). Her ana sayfa hem düz okundu hem Playwright ile açıldı. Sayfa seçimi: ana sayfadaki bağlantılar metnine ve adresine göre puanlandı, haber ve blog adresleri dışlandı, en fazla 2 ürün ya da hizmet, 1 hakkımızda, 1 kariyer sayfası seçildi. Betikler: `trials/sitescan.py`, `trials/trial_site_scan.py`.
+
+| Kriter | Sonuç |
+|---|---|
+| "Düz okuma 50 kelimenin altındaysa Playwright" kuralı, içeriği JavaScript ile gelen siteleri kaçırmamalı | Tuttu: 3 siteden 3'ünü yakaladı |
+| Kural en fazla 2 sitede gereksiz yere Playwright açtırmalı | Tuttu: 1 (A2, site hiç açılmıyor) |
+| Seçilen ürün sayfası, ayrı ürün sayfası olan sitelerin en az %80'inde gerçekten ürün ya da hizmet sayfası olmalı | Tuttu: 10/12 (%83) |
+
+- Düz okumada ana sayfa kelime sayıları iki kümeye ayrıldı: JavaScript ile yüklenen sitelerde 0, 0, 3; diğerlerinde en az 193. 50 kelimelik eşik bu boşluğun içinde.
+- 15 sitenin 3'ü (%20) JavaScript ile yükleniyor: BNCool, Konumsal, Zeg. Üçü de Playwright ile okundu.
+- Paydaya girmeyen 3 site: A2 (açılmıyor), UMRAM (araştırma merkezi, ürün sayfası yok), Mora (tek sayfalık site, menü bağlantıları sayfa içi; içerik zaten ana sayfada).
+- Yanlış çıkan 2 site:
+  - Birfatura: "Projesoft entegrasyonu" sayfası ("proje" kelimesi eşleşti) ve bir blog yazısı ("Etsy'de en çok satılan ürünler") seçildi.
+  - T2: hizmet sayfasının adı "Consulting", kelime listesinde yoktu.
+- Görülen diğer kusurlar: aynı sayfa `www`'li ve `www`'suz iki kez seçildi (innoCentrum); "Kariyer" bağlantısı hakkımızda sayfasının bir bölümüne gidiyordu ve hakkımızda sayfası kariyer diye seçildi (T2); innoCentrum'da asıl ürün "Platform" ve "Modüller" altında, "Hizmetler" seçildi.
+- Her sayfanın metni menüyle başlıyor ve menü her sayfada tekrar ediyor. Oska'da seçilen üç sayfanın ilk 75 kelimesi aynı. Groq'a gönderilen metnin önemli bir kısmı tekrar.
