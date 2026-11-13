@@ -222,3 +222,26 @@ Adresi yazan 30 şirketin 8'i ilk düz okumada okunamamıştı. İkisi basit kur
 - 8 okunamayan sitenin son durumu: 4'ü kurtuldu (Simovate: ana alan adı, Argem: yönlendirme, Nanodev ve Comnify: Playwright). 4'ü kaldı (Endeksa ve KMO: bot koruması, Kron: zaman aşımı, Ekin: alan adı kapanmış).
 - Adresi yazan 30 şirkette okunamayan oran %27'den %13'e iniyor.
 - Düz okumada kelime sayıları: JavaScript ile yüklenen sitelerde 0, 1, 5. İçeriği gerçekten az olan sitelerde 15-59. Playwright'a ne zaman başvurulacağını belirleyen eşik sınanmadı.
+
+## 13. Site bulma, deneme 5: kısa ilk kelime ve Playwright'lı doğrulama (2026-11-13)
+
+Bölüm A. Listede ilk kelimesi 4 harften kısa olan 47 şirket var, 19'unun adresi yazıyor. Bunlardan rastgele 10'u (seed 20261121). Kural: ilk iki kelime birleştirilip alan adında aranır ("T2 YAZILIM" → "t2yazilim").
+
+| Kriter | Sonuç |
+|---|---|
+| Kabul edilen yanlış site: 0 | Tuttu: 0 |
+| Kabul edilen doğru site: en az yarısı | Tutmadı: 3/10 |
+
+- 7 şirket bulunamadı. Kural fazla sıkı: alan adları çoğunlukla iki kelimenin birleşimi değil (`t2.com.tr`, `kmo.com.tr`, `a2labs.com.tr`). 3 şirkette doğru site ilk 5 sonuçtaydı ama kural eşleştiremedi.
+- Kabul edilen 3 sitenin 2'si listedekinden farklı adresti. Mil Yazılım: listedeki `miloyun.com` artık açılmıyor, bulunan `milyazilim.com.tr` doğru şirket (sayfada "Bilkent Cyberpark'ta faaliyet" yazıyor). Zeg Teknoloji: listede `egyazilim.com`, bulunan `zegteknoloji.com`; ad uyuyor ve sayfada Ankara geçiyor, ama iki site de düz okumada boş geldiği için elle tam doğrulanamadı.
+- Listedeki adresler eskimiş olabiliyor. Arama bazen listeden daha güncel adres veriyor.
+
+Kriter dışı, kuralın çıkış örnekleri: AI Generator, E Kampüs ve HD Yapımcılık üçünde de site seçilmedi. AI Generator'da artık yanlış site seçilmiyor. E Kampüs'te deneme 3'te bulunan doğru site bu sefer arama sonuçlarında hiç çıkmadı: aynı sorgu farklı zamanda farklı sonuç verebiliyor.
+
+Bölüm B. Daha önce doğrulanamayan 3 sitede, düz okumada teknokent ya da şehir adı bulunamazsa sayfa Playwright ile açılıp tekrar arandı (kriter yok, gözlem):
+
+| Site | Sonuç |
+|---|---|
+| Harp Savunma | Doğrulandı (Playwright, ana sayfada "Ankara") |
+| Nedmod | Doğrulandı (Playwright, ana sayfada "Bilkent") |
+| Orbitel | Doğrulanmadı (Playwright ile 88 kelime, şehir adı yok) |
