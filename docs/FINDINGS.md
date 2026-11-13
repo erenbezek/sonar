@@ -127,3 +127,30 @@ Yeni 10 şirket (seed 20261115). Değişiklikler: unvandaki hukuki ekler atıld�
 - İlk 5 sonuç içinde doğru site, çoğunlukla alan adında şirket adının ayırt edici kelimesi geçen sonuçtu (emvop.com, kimola.com, smayd.com). Bu, sonuçlara bakarak çıkarılmış bir varsayım, ayrıca sınanmadı.
 - Kusur: unvan kısaltma "LTD.ŞTİ." (boşluksuz) yazımını yakalamadı, AGEM tam unvanla arandı.
 - Sonuçlarda açıklanamayan `tavily.com` adresleri çıktı, incelenmedi.
+
+## 9. Tavily ile site adresi bulma, deneme 3 (2026-11-13)
+
+Sade sorgu (kısa ad), ilk 5 sonuç. Seçim kuralı: alan adında şirket adının ilk kelimesi geçen ilk sonuç; yoksa "bulunamadı". Listedekinden farklı adres seçilirse sayfa açılıp aynı şirket mi diye bakıldı (kural denemeden önce yazıldı).
+
+Bölüm 1, adresi bilinen 10 yeni şirket (seed 20261116):
+
+| Kriter | Sonuç |
+|---|---|
+| Kural doğru siteyi seçmeli, en az 7/10 | Tuttu: 8/10 |
+| Kural en fazla 1 yanlış site seçmeli | Tuttu: 1 yanlış |
+
+- Doğru sayılan 8'in biri listedekinden farklı adresti: `oplog.io`. Listedeki `oplog.com.tr` zaten oraya yönleniyor.
+- Yanlış seçim: Codebase için yabancı bir şirketin sitesi (`codebase.com`) seçildi, doğrusu `codebase.com.tr`.
+- Bulunamayan: "Yapay Zeka Politikaları Derneği (AIPA)". Doğru site ilk sıradaydı ama alan adı kısaltmadan geliyor (`aipaturkey.org`).
+
+Bölüm 2, adresi olmayan 10 şirket (seed 20261117). Doğru cevap bilinmediği için seçilen siteler elle kontrol edildi:
+
+| Sonuç | Sayı | Şirketler |
+|---|---|---|
+| Büyük ihtimalle doğru | 6 | Bulbi, E Kampüs, Curve, Daiichi, Forecr, HeartSapiens |
+| Yanlış | 1 | AI Generator için `fal.ai` seçildi |
+| Büyük ihtimalle yanlış | 1 | Areka Yazılım için İstanbul'daki bir makine üreticisi seçildi |
+| Bulunamadı | 2 | HD Yapımcılık, Mavensis |
+
+- Kuralın zayıf yeri kısa ilk kelimeler: "AI", "E", "HD". "AI" yanlış siteyi seçtirdi, "E" tesadüfen doğruyu seçti.
+- Sınanmamış gözlem: doğru sitelerin sayfasında "Cyberpark", "Bilkent" ya da "Ankara" geçiyor (Oplog, Codebase'in doğru sitesi). Yanlış seçilen `codebase.com`'da geçmiyor. Teknokent adı sorguda işe yaramadı, ama bulunan siteyi doğrulamakta işe yarayabilir.
