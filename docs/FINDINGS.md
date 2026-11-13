@@ -284,3 +284,37 @@ Doğru sitesi kabul edilen şirket sayısı (listedekinden farklı ama aynı şi
 - Doğrulama kuralında delik: A2 için seçilen `a2technology.co` sitesi "Ankara" kelimesiyle doğrulandı, ama kelime müşteri listesinde geçiyordu ("Ankara Emniyet Müdürlüğü"). Şirket adı uyuyor ("a2 Teknoloji"), büyük ihtimalle doğru şirket; ama doğrulama yanlış sebeple geçti.
 - E-A Teknoloji: doğru site ilk sıradaydı, sayfada şehir adı geçmediği için doğrulanamadı.
 - İki şirket hiçbir yöntemle bulunamadı: C.B.K. Soft, CE Tasarım (sitesi `positive.com.tr`, alan adında şirket adı yok).
+
+## 16. Site bulma, deneme 8: iki adımlı arama ve sıkı doğrulama (2026-11-13)
+
+Yöntem: (1) sadece adla ara, ilk 5 sonuç; (2) kabul edilen site yoksa ad + "Ankara" ile ara, ilk 10 sonuç; (3) sıkı doğrulama: sayfada "Cyberpark" ya da "Bilkent" geçmeli, ya da "Ankara" bir adresin içinde olmalı (yakınında posta kodu, Çankaya, mahalle, cadde, teknokent). "Ankara" tek başınaysa site kabul edilmez. Daha önce hiçbir site bulma denemesinde kullanılmamış şirketler; ilk kelimesi kısa olanlar adresi bilinen grupta yok. Betik: `trials/trial_two_step.py`.
+
+Adresi bilinen 10 şirket (seed 20261122):
+
+| Kriter | Sonuç |
+|---|---|
+| Kabul edilen doğru site: en az 7/10 | Tutmadı: 6/10 |
+| Kabul edilen yanlış site: 0 | Tuttu: 0 |
+| Sıkı doğrulamanın elediği doğru site: en fazla 1 | Tuttu: 0 (ama "Ankara" tek başına geçen site hiç çıkmadı, kural zorlanmadı) |
+
+Kabul edilmeyen 4 şirket:
+- Solveka: doğru site seçildi, ama site sadece `http` ile açılıyor ve doğrulama adımı sadece `https` deniyordu. Betikteki hata düzeltildi; düzeltmeden sonra site doğrulandı. Kriter sonucu 6/10 kalır, düzeltmeyle 7/10.
+- Argem: doğru site ilk sıradaydı, ama sitede şehir ya da teknokent adı hiç geçmiyor.
+- Sistematik İnovasyon: sitesi `innocentrum.com`, alan adında şirket adı yok. İkinci sorguda 4. sıradaydı ama kural seçemedi.
+- OneZero: sitesi (`onezeroi.com`) iki sorguda da sonuçlara girmedi.
+
+İkinci sorgu 1 şirket kazandırdı (Rocksoft: sadece adla sonuçlarda yoktu, "Ankara" ile 4. sırada geldi).
+
+Adresi olmayan 10 şirket (seed 20261123):
+
+| Sonuç | Sayı | Şirketler |
+|---|---|---|
+| Kabul edildi | 8 | Zihinler Fora, RunX, Swart, Oasis, Clonify Labs, Cognito, Pulsetronics, Poetas |
+| Seçildi ama okunamadı | 1 | Berca (site sadece `http` ile açılıyor; hata düzeltildikten sonra doğrulandı) |
+| Bulunamadı | 1 | Kozkarlar |
+
+- Kabul edilen 8 sitenin 7'sinde sayfada "Cyberpark" ya da "Bilkent" yazıyor, alan adı da şirket adını taşıyor. Sekizincisi (Oasis) adres içindeki "Ankara" ile doğrulandı; site başlığı "Oasis Teknoloji | Enerji ve Yapay Zeka Çözümleri", şirketin unvanıyla uyuşuyor.
+- Yanlış site kabul edilmedi. Berca için ilk sorguda Endonezya'daki bir şirketin sitesi seçildi, doğrulama eledi.
+- Önceki denemelerde adresi olmayan şirketlerde 10'da 3 kabul ediliyordu. Fark kısmen yöntemden (Playwright'lı doğrulama, ikinci sorgu), kısmen örneklemden geliyor olabilir; ayrıştırılmadı.
+
+Site bulma denemelerinin toplamı (bölüm 7-16): yaklaşık 150 Tavily kredisi. Doğrulama adımı eklendikten sonraki dört denemede kesin yanlış olduğu görülen hiçbir site kabul edilmedi.

@@ -131,34 +131,63 @@ def _contact_links(base: str, html: str) -> list[str]:
     return links[:2]
 
 
-def verify(site_host: str, bundle: str, browser=None) -> tuple[str, str]:
-    """Sitede teknokent ya da şehir adı geçiyor mu.
+# "Ankara" tek başına yetmez: müşteri listesinde de geçebilir (FINDINGS bölüm 15).
+ADDRESS_RX = re.compile(r"06\d{3}|cankaya|mah\.|mahallesi|cad\.|caddesi|sok\.|sokak|teknokent|teknoloji gelistirme|universiteler")
+STRONG_RX = re.compile(r"cyberpark|bilkent")
 
-    Önce düz okuma (ana sayfa, sonra iletişim sayfası). Bulunamazsa ve browser verildiyse
+
+def place_evidence(html: str) -> tuple[str, str] | None:
+    """('strong', kelime): teknokent adı ya da adres içinde şehir. ('weak', 'ankara'): şehir adı tek başına."""
+    text = lower_tr(html)
+    m = STRONG_RX.search(text)
+    if m:
+        return "strong", m.group(0)
+    weak = None
+    for m in re.finditer(r"ankara", text):
+        window = text[max(0, m.start() - 120): m.end() + 120]
+        if ADDRESS_RX.search(window):
+            return "strong", "ankara+address"
+        weak = ("weak", "ankara")
+    return weak
+
+
+def verify(site_host: str, bundle: str, browser=None) -> tuple[str, str]:
+    """Sitenin doğru şirkete ait olduğuna dair yer kanıtı arar.
+
+    Önce düz okuma (ana sayfa, sonra iletişim sayfası). Hiç kanıt bulunamazsa ve browser verildiyse
     aynı adımlar Playwright ile tekrarlanır. Bot doğrulama sayfası aşılmaya çalışılmaz.
-    Döner: (verified | unverified | unreadable, açıklama)
+    Döner: (verified | weak | unverified | unreadable, açıklama)
+      verified: teknokent adı ya da adres içinde şehir adı var.
+      weak: şehir adı var ama adres içinde değil. Kabul edilmez.
     """
-    # Bazı siteler sadece www ile açılıyor (mapyazilim.com), bu yüzden iki adres de denenir.
+    # Bazı siteler sadece www ile (mapyazilim.com) ya da sadece http ile (solveka.com.tr) açılıyor.
     final, html, base = None, "", "https://" + site_host
-    for candidate in ("https://" + site_host, "https://www." + site_host):
+    for candidate in ("https://" + site_host, "https://www." + site_host, "http://" + site_host, "http://www." + site_host):
         final, html = _get(candidate, bundle)
         time.sleep(1)
         if html:
             base = candidate
             break
+    weak = None
     if html:
-        m = PLACE_RX.search(lower_tr(html))
-        if m:
-            return "verified", f"plain/home:{m.group(0)}"
-        for url in _contact_links(final, html):
-            _, contact_html = _get(url, bundle)
-            time.sleep(1)
-            m = PLACE_RX.search(lower_tr(contact_html))
-            if m:
-                return "verified", f"plain/contact:{m.group(0)}"
+        pages = [("home", html)]
+        evidence = place_evidence(html)
+        if not (evidence and evidence[0] == "strong"):
+            for url in _contact_links(final, html):
+                _, contact_html = _get(url, bundle)
+                time.sleep(1)
+                pages.append(("contact", contact_html))
+        for label, page_html in pages:
+            evidence = place_evidence(page_html)
+            if evidence and evidence[0] == "strong":
+                return "verified", f"plain/{label}:{evidence[1]}"
+            if evidence:
+                weak = f"plain/{label}:{evidence[1]}"
+        if weak:
+            return "weak", weak
     if browser is None:
         return ("unverified", "plain read only") if html else ("unreadable", "no response")
-    page = browser.new_page(user_agent=None)
+    page = browser.new_page()
     try:
         try:
             page.goto(base, wait_until="networkidle", timeout=40000)
@@ -167,22 +196,46 @@ def verify(site_host: str, bundle: str, browser=None) -> tuple[str, str]:
         html = page.content()
         if BOT_CHECK_RX.search(html):
             return "unreadable", "bot check page"
-        m = PLACE_RX.search(lower_tr(html))
-        if m:
-            return "verified", f"browser/home:{m.group(0)}"
+        evidence = place_evidence(html)
+        if evidence and evidence[0] == "strong":
+            return "verified", f"browser/home:{evidence[1]}"
+        if evidence:
+            weak = f"browser/home:{evidence[1]}"
         for url in _contact_links(page.url, html):
             try:
                 page.goto(url, wait_until="networkidle", timeout=40000)
             except Exception:  # noqa: BLE001
                 pass
-            m = PLACE_RX.search(lower_tr(page.content()))
-            if m:
-                return "verified", f"browser/contact:{m.group(0)}"
+            evidence = place_evidence(page.content())
+            if evidence and evidence[0] == "strong":
+                return "verified", f"browser/contact:{evidence[1]}"
+            if evidence:
+                weak = f"browser/contact:{evidence[1]}"
+        if weak:
+            return "weak", weak
         return "unverified", f"no place name ({len(page.inner_text('body').split())} words in browser)"
     except Exception as e:  # noqa: BLE001
         return "unreadable", type(e).__name__
     finally:
         page.close()
+
+
+def find_site(name: str, api_key: str, bundle: str, browser=None) -> dict:
+    """İki adımlı arama: önce sadece ad (5 sonuç), kabul edilen site yoksa ad + "Ankara" (10 sonuç)."""
+    query = short_name(name)
+    steps = []
+    for label, q, limit in (("name/5", query, 5), ("ankara/10", query + " Ankara", 10)):
+        results = search(q, api_key, limit)
+        time.sleep(1)
+        rank, picked = choose(name, results)
+        status, detail = verify(picked, bundle, browser) if picked else ("", "")
+        steps.append({"step": label, "picked": picked, "rank": rank, "status": status, "detail": detail,
+                      "results": [host(r["url"]) for r in results]})
+        if status == "verified":
+            break
+    last = steps[-1]
+    accepted = last["picked"] if last["status"] == "verified" else None
+    return {"accepted": accepted, "steps": steps}
 
 
 def load_companies() -> list[tuple[str, str, str]]:
