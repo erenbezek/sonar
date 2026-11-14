@@ -219,3 +219,38 @@ def drop_repeats(pages: list[list[str]]) -> list[list[str]]:
                 kept.append(line)
         out.append(kept)
     return out
+
+
+def scan_site(url: str, bundle: str, browser) -> list[tuple[str, str, str]]:
+    """Bir sitenin ana sayfasını ve seçilen sayfalarını okur. Döner: [(kategori, adres, html)], site açılmazsa boş liste.
+
+    Ana sayfa düz okumada BROWSER_THRESHOLD kelimenin altındaysa bütün sayfalar Playwright ile okunur.
+    """
+    final, html, _note = read_home(url, bundle)
+    if not html:
+        return []
+    use_browser = len(parse(html)[0].split()) < BROWSER_THRESHOLD
+    if use_browser:
+        final, html = render(browser, final)
+    pages = [("home", final, html)]
+    picks = select_pages(final, parse(html)[1])
+    for category in ("product", "about", "career"):
+        for page_url, _text, _score in picks.get(category, []):
+            _, page_html = render(browser, page_url) if use_browser else get(page_url, bundle)
+            if page_html:
+                pages.append((category, page_url, page_html))
+    return pages
+
+
+def build_document(pages: list[tuple[str, str, str]], word_cap: int = 2300) -> str:
+    """Groq'a gidecek metin: sayfalar sırayla, tekrar eden satırlar atılmış, toplam kelime sınırlı."""
+    cleaned = drop_repeats([lines(html) for _, _, html in pages])
+    parts, budget = [], word_cap
+    for (category, _url, _html), page_lines in zip(pages, cleaned):
+        tokens = "\n".join(page_lines).split()
+        if not tokens or budget <= 0:
+            continue
+        text = "\n".join(page_lines) if len(tokens) <= budget else " ".join(tokens[:budget])
+        budget -= min(len(tokens), budget)
+        parts.append(f"### SAYFA: {category}\n{text}")
+    return "\n\n".join(parts)

@@ -384,3 +384,12 @@ Deneme 9-10'daki 14 sitenin kayıtlı sayfaları üç metinle soruldu: ham, tekr
 - Etiketi kesin olmayan Zeo'da üç metin üç farklı cevap verdi: bilinmiyor, hayır, evet. Belirsiz şirketlerde cevap, metnin hangi kısmının gönderildiğine bağlı.
 - Yapay zekâ sorusunda "hayır" ve "bilinmiyor" cevapları aynı sitede metinden metine değişti. İkisi de doğru sayıldı; model bu ikisini tutarlı ayırmıyor.
 - 13 şirketin 10'u "evet" olduğu için bu örneklem "hayır" cevabını zayıf sınıyor. Üç "hayır" şirketinden ikisi (BNCool, Antenom) üç metinde de doğru çıktı.
+
+## 20. Groq'un günlük token sınırı (2026-11-14, Groq'un kendi hata mesajından)
+
+- `openai/gpt-oss-120b` için günlük sınır 200.000 token (TPD). Sınır hesaba bağlı: hata mesajı anahtar değil, organizasyon adıyla geliyor. Aynı hesabı kullanan başka projeler de aynı sınırı paylaşıyor.
+- Sınır kayan pencereyle işliyor: kullanılan token 24 saat sonra geri açılıyor.
+- Deneme 11 (yaklaşık 138.000 giriş token) ve deneme 12'nin ilk 21 isteği aynı 24 saat içinde sınırı doldurdu. Deneme 12 yarıda kaldı.
+- Şirket başına ortalama giriş: tekrarlar atılmış metinle yaklaşık 3.200 token (14 sitede 45.369). Çıkışla birlikte şirket başına kabaca 3.500-4.000 token. Günlük sınır yaklaşık 50-55 şirkete yetiyor.
+- 368 şirketlik Cyberpark listesinin okunabilen kısmı (yaklaşık 250 şirket) için bu, tek hesapla en az 5 gün demek.
+- Betiklere eklendi: günlük sınıra takılınca beklemek yerine durma, yarıda kalan denemeyi kaldığı yerden sürdürme.
