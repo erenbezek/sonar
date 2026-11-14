@@ -360,3 +360,27 @@ Hiçbir yöntem üç kriteri birden geçmedi. Ama ölçünün kendisi kusurlu ç
 - Groq'un dakikalık sınırı yaklaşık 2.500 kelimeye izin veriyor. Ham metin 14 sitenin 5'inde bunu aşıyor, tekrar atılınca 2'sinde, trafilatura ile hiçbirinde.
 
 Doğru ölçü cümle saymak değil, Groq'un cevabının değişip değişmediği. Sonraki deneme bunu ölçecek.
+
+## 19. Metin temizlemenin Groq'un cevabına etkisi, deneme 11 (2026-11-14)
+
+Deneme 9-10'daki 14 sitenin kayıtlı sayfaları üç metinle soruldu: ham, tekrarları atılmış, trafilatura. Her metin 2.300 kelimede kesildi. Soru metni deneme 2 ile aynı. Etiketler denemeden önce yazıldı: "kendi yazılımını geliştiriyor mu" 13 sitede (10 evet, 3 hayır), "üründe yapay zekâ" 11 sitede (2 evet); etiketi kesin olmayanlar sayılmadı. Betikler: `trials/groq_extract.py`, `trials/trial_groq_text_variants.py`. 42 istek, yaklaşık 45 dakika.
+
+| Kriter | Sonuç |
+|---|---|
+| Tekrar atma yönteminin doğru cevap sayısı hamınkinden düşük olmamalı | Tuttu: ikisi de 22/24 |
+| Trafilatura'nın doğru cevap sayısı tekrar atma yönteminden düşük olmamalı | Tuttu: 22/24 |
+| Her yöntemde kanıt cümlelerinin hepsi gönderilen metinde geçmeli | Tutmadı: ham 28/31, tekrar atma 27/31, trafilatura 29/32 |
+
+| Yöntem | Kendi yazılımı | Yapay zekâ | Kanıt bulundu | Giriş token toplamı |
+|---|---|---|---|---|
+| Ham | 11/13 | 11/11 | 28/31 | 56.567 |
+| Tekrarları atılmış | 11/13 | 11/11 | 27/31 | 45.369 (-%20) |
+| Trafilatura | 12/13 | 10/11 | 29/32 | 36.428 (-%36) |
+
+- Doğruluk açısından üç yöntem arasında fark yok. Trafilatura bir cevap kazandı (UMRAM: ham metinde "MRI Software and AI" başlığı yüzünden "evet" denmişti), bir cevap kaybetti (Pleksus: ana sayfadaki yapay zekâ cümlesini attığı için "bilinmiyor").
+- Kanıt cümlelerinin yaklaşık %11'i bulunamadı (94'te 10). Önceki denemelerde bu oran %4'tü (47'de 2). Bulunamayan 10 kanıtın 5'inde model uzun cümleyi "..." ile kısaltmış. Diğerlerinde ayrı satırları birleştirmiş ya da ürün adlarını liste halinde yazmış. 25 kelime sınırı modeli uzun cümleyi kısaltmaya itiyor olabilir; sınanmadı.
+- Kanıt kontrolü kuralı uygulanınca kabul edilen doğru "kendi yazılımı" cevabı: ham 9, tekrar atma 8, trafilatura 10.
+- T2'de model üç metinde de kendisiyle çelişti: özetinde "yazılım geliştirme hizmeti sunan bir şirket" dedi, kanıt olarak "On-demand software development" gösterdi, ama "kendi yazılımını geliştiriyor mu" sorusuna "hayır" dedi. Sorudaki "danışmanlık yazılım geliştirmek değildir" örneği, müşteriye yazılım geliştiren şirketi yanlış tarafa itiyor olabilir.
+- Etiketi kesin olmayan Zeo'da üç metin üç farklı cevap verdi: bilinmiyor, hayır, evet. Belirsiz şirketlerde cevap, metnin hangi kısmının gönderildiğine bağlı.
+- Yapay zekâ sorusunda "hayır" ve "bilinmiyor" cevapları aynı sitede metinden metine değişti. İkisi de doğru sayıldı; model bu ikisini tutarlı ayırmıyor.
+- 13 şirketin 10'u "evet" olduğu için bu örneklem "hayır" cevabını zayıf sınıyor. Üç "hayır" şirketinden ikisi (BNCool, Antenom) üç metinde de doğru çıktı.
